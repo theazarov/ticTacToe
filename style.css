@@ -1,0 +1,16 @@
+table {
+    background-color: rgb(255, 224, 183);
+    border-collapse: collapse;
+    width: 200px;
+    height: 200px;
+}
+td {
+	width: 50px;
+	height: 50px;
+	border: 1px solid black;
+    text-align: center;
+}
+
+.colorGreen{
+    background-color: rgb(98, 255, 182);
+}
