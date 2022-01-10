@@ -2,6 +2,7 @@
 
 //Cоздаем таблицу:
 let table = document.querySelector("table");
+let out = document.getElementById('out')
 
 function createTable() {
   table.innerHTML = "";
@@ -115,6 +116,7 @@ function checkWinner(tds) {
 
     if (x == 3 || o == 3) {
       colorize(tds);
+      out.innerHTML = (x == 3 ? 'Победили крестики!' : 'Победили нолики!')
       table.classList.add("true");
     }
   }
