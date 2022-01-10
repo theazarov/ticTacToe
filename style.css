@@ -1,5 +1,14 @@
+* {
+	box-sizing: border-box;
+}
+#parent {
+	margin: 0 auto;
+	width: 200px;
+}
+
 table {
-    background-color: rgb(255, 224, 183);
+    margin-top: 50px;
+    background-color: rgb(167, 167, 167);
     border-collapse: collapse;
     width: 200px;
     height: 200px;
@@ -8,9 +17,10 @@ td {
 	width: 50px;
 	height: 50px;
 	border: 1px solid black;
-    text-align: center;
+	text-align: center;
+	font-weight: bold;
 }
 
 .colorGreen{
-    background-color: rgb(98, 255, 182);
+    background-color: rgb(32, 184, 100);
 }

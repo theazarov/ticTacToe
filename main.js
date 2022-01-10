@@ -2,7 +2,9 @@
 
 //Cоздаем таблицу:
 let table = document.querySelector("table");
+
 function createTable() {
+  table.innerHTML = "";
 
   for (let i = 0; i < 3; i++) {
     let tr = document.createElement("tr");
@@ -15,107 +17,112 @@ function createTable() {
     }
     table.appendChild(tr);
   }
+  ticTacToe();
 }
 createTable();
 
 function ticTacToe() {
-    let tds = table.querySelectorAll("td");
-    let switchPlayers = 1;
-  
-    for (let td of tds) {
-      td.addEventListener("click", function game(event) {
-        if (switchPlayers === 1 && td.className == "free") {
-          td.classList.remove("free");
-          td.classList.add("playerX");
-          td.innerHTML = "X";
-  
-          switchPlayers = 0;
-        } else if (td.classList == "free") {
-          td.classList.remove("free");
-          td.classList.add("playerO");
-          td.innerHTML = "O";
-  
-          switchPlayers = 1;
-        } 
-        
-        winnerVertically("playerX", td);
-        winnerVertically("playerO", td);
-  
-        winnerHorizontally("playerX");
-        winnerHorizontally("playerO");
-  
-        winnerDiagonally("playerX");
-        winnerDiagonally("playerO");
-      });
-    }
-}
-ticTacToe()
+  let tds = table.querySelectorAll("td");
+  let switchPlayers = 1;
 
+  for (let td of tds) {
+    td.addEventListener("click", function () {
+      if (
+        switchPlayers == 1 &&
+        td.className == "free" &&
+        !table.classList.contains("true")
+      ) {
+        td.classList.remove("free");
+        td.classList.add("playerX");
+        td.innerHTML = "X";
+
+        switchPlayers = 0;
+      } else if (td.classList == "free" && !table.classList.contains("true")) {
+        td.classList.remove("free");
+        td.classList.add("playerO");
+        td.innerHTML = "O";
+
+        switchPlayers = 1;
+      }
+
+      winnerVertically(td);
+      winnerHorizontally();
+      winnerDiagonally();
+    });
+  }
+}
 
 //Проверяем победителя по вертикали:
-function winnerVertically(player, td) {
+function winnerVertically(td) {
   let tds = document.querySelectorAll(
     '#table td[data-mesh="' + td.dataset.mesh + '"]'
   );
-  let counter = 0;
-  checkWinner(player, tds, counter);
+  checkWinner(tds);
 }
 
 //Проверяем победителя по горизонтали:
-function winnerHorizontally(player) {
+function winnerHorizontally() {
   let trs = table.querySelectorAll("tr");
-  let counter = 0;
 
   for (let tr of trs) {
     let tds = tr.querySelectorAll("td");
-    checkWinner(player, tds, counter);
+    checkWinner(tds);
   }
 }
 
 //Проверяем победителя по диагонали:
-function winnerDiagonally(player) {
+function winnerDiagonally() {
   let trs = table.querySelectorAll("tr");
-  let counter = 0;
 
-  checkWinner(player, getDiagonally(trs, 1), counter);
-  checkWinner(player, getDiagonally(trs, 3), counter);
-}
-
-function colorize(player, tds) {
-  for (let colorElem of tds) {
-    colorElem.classList.add("colorGreen");
-    console.log(player + " wins");
-  }
+  checkWinner(getDiagonally(trs, 1));
+  checkWinner(getDiagonally(trs, 3));
 }
 
 //Функция для поиска диагональных ячеек:
 function getDiagonally(trs, num) {
-    let diagonally = [];
-    let i = num;
-  
-    for (let tr of trs) {
-      let tds = tr.querySelectorAll("td");
-      for (let td of tds) {
-        if (td.dataset.mesh == i) {
-          diagonally.push(td);
-        }
+  let diagonally = [];
+  let i = num;
+
+  for (let tr of trs) {
+    let tds = tr.querySelectorAll("td");
+    for (let td of tds) {
+      if (td.dataset.mesh == i) {
+        diagonally.push(td);
       }
-      num == 3 ? i-- : i++;
     }
-    return diagonally;
+    num == 3 ? i-- : i++;
   }
+  return diagonally;
+}
 
 //Общая функция для поиска выигрышных ячеек:
-function checkWinner(player, tds, counter) {
+function checkWinner(tds) {
+  let x = 0;
+  let o = 0;
+
   for (let td of tds) {
-    if (td.className == player) {
-      counter++;
+    if (td.classList.contains("playerX")) {
+      x++;
     } else {
-      counter = 0;
+      x = 0;
     }
-    if (counter == 3) {
-      colorize(player, tds);
-        td.classList.add('true')
+
+    if (td.className == "playerO") {
+      o++;
+    } else {
+      o = 0;
     }
+
+    if (x == 3 || o == 3) {
+      colorize(tds);
+      table.classList.add("true");
+    }
+  }
+}
+
+//Раскрашиваем выиграшные ячейки:
+function colorize(tds) {
+  for (let colorElem of tds) {
+    colorElem.classList.add("colorGreen");
   }
 }
